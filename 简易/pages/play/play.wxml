@@ -1,0 +1,23 @@
+<!--pages/play/play.wxml-->
+
+<view>
+  PLAY
+</view>
+<view class="all">
+  <view class="main_title">
+  <form bindreset="foo">
+    <input  bindinput='getInputValue' value="{{inputValue}}" name='price' type='text' placeholder='输入内容'></input>
+    <view>当前点数:{{counts}}</view>
+    <view>投掷结果:{{result}}</view>
+    <view>当前得分:{{score}}</view>
+    <view>当前得分期望:{{equal}}</view>
+    <view>当前轮次:{{round}}</view>
+    <button class="start_button" bind:tap="Game_start">
+      START
+    </button>
+    <button bind:tap="Game_clear">
+      CLEAR
+    </button>
+  </form>
+  </view>
+</view>
