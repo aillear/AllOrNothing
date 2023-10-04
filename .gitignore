@@ -4,3 +4,5 @@ minigame/
 typings/
 engine.ide.json
 assets/.buildin/
+assets/Assets/.vs
+assets/Assets/.vs.meta

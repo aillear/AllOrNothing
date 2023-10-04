@@ -34,7 +34,7 @@
         "packNpmRelationList": [],
         "minifyWXSS": true,
         "disableUseStrict": false,
-        "useStaticServer": false,
+        "useStaticServer": true,
         "showES6CompileOption": false,
         "useCompilerPlugins": false,
         "ignoreUploadUnusedFiles": true
@@ -47,7 +47,17 @@
     "projectname": "AllOrNothing",
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
-    "packOptions": {},
+    "packOptions": {
+        "ignore": [
+            {
+                "type": "folder",
+                "value": "assets/IDEPack"
+            }
+        ]
+    },
+    "staticServerOptions": {
+        "servePath": "minigame/assets/"
+    },
     "condition": {
         "search": {
             "list": []
