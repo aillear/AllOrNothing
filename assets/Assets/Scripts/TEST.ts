@@ -16,6 +16,9 @@ export default class TEST extends engine.Script {
 	public onTouchStart() {
 		console.log("btn", 200);
 		GetEventCenter().EventTrigger1<number>(E_EventName.TestEvent, 100);
+
+		var temp = this.entity.getComponent(engine.UIButton);
+		console.log(temp.getTypeName());
 	}
 	public onDestroy() {
 

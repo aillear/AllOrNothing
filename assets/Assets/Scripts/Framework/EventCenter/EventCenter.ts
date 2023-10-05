@@ -3,6 +3,7 @@ import * as basic from "../Delegate/Delegate";
 
 export enum E_EventName{
 	TestEvent,
+	LoadOver,
 }
 
 class EventInfo {
