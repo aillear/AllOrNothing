@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "types": [
       "minigame-api-typings"
     ]
@@ -32,5 +33,5 @@
     "es2015.promise",
     "es2016",
     "dom"
-  ]
+  ],
 }
