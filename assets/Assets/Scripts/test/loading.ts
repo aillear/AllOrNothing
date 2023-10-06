@@ -8,7 +8,7 @@ export default class loading extends engine.Script {
     public name: string = "myname";
 
     public onAwake() {
-        console.log("loading");
+        console.log("loading asdasdasd");
         GetEventCenter().AddEventListener(E_EventName.LoadOver, () => {
             console.log("load over");
             engine.loader.load<engine.Scene>("Assets/Scenes/testPanel.scene").promise.then((scene) => {

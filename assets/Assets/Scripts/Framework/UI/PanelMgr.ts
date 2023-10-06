@@ -27,7 +27,7 @@ export class PanelMgr {
 
 	// 初始化
 	private constructor() {
-		const prefab:engine.Prefab = engine.loader.getAsset<engine.Prefab>("Assets/Prefabs/UI/Canvas.prefab");
+		const prefab = engine.loader.getAsset<engine.Prefab>("Assets/Prefabs/UI/Canvas.prefab");
 		const prefabInstance = prefab.instantiate()
 		const rootScene = engine.game.activeScene2D.root;
 		rootScene.transform2D.addChild(prefabInstance.transform2D);

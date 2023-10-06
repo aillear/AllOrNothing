@@ -13,7 +13,7 @@ export default abstract class BasePanel extends engine.Script {
 
 
 	public onAwake() {
-		// 初始化并且获取面板上的组件
+		// 初始化并且获取面板上的组件, 不知道为啥不能用.换到下面onStart里
 		console.log("awake")
 		
 	}
@@ -28,7 +28,6 @@ export default abstract class BasePanel extends engine.Script {
 		this.FindAllElements<engine.UIToggleGroup>(engine.UIToggleGroup);
 		this.FindAllElements<engine.UISprite>(engine.UISprite);
 		this.FindAllElements<engine.TouchInputComponent>(engine.TouchInputComponent);
-		console.log(this.dic);
 	}
 
 	private FindAllElements<T extends engine.Component>(ctor: typeof engine.Component): void{
@@ -43,7 +42,6 @@ export default abstract class BasePanel extends engine.Script {
 
 			// 如果是按钮,直接把他监听了.
 			if (control instanceof engine.UIButton) {
-				console.log(control.entity.name);
 				(control as engine.UIButton).onClick.add(() => {
                     this.MyOnClick(name);
                 });
