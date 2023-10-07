@@ -45,7 +45,7 @@ export default class ComponentController extends engine.Script {
     }
 
     public RemoveFixedUpdateListener(action: SAction): void {
-            this.fixedUpdateListener.remove(action);
+        this.fixedUpdateListener.remove(action);
     }
 
     public RemoveAllUpdateListener(): void {

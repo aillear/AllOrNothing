@@ -49,6 +49,4 @@ export class PublicComponentMgr{
     public RemoveAllFixedUpdateListener(): void {
         this.controller.RemoveAllFixedUpdateListener();
     }
-
-
 }

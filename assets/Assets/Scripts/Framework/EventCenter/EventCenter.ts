@@ -11,7 +11,7 @@ class EventInfo {
 	constructor(arg: basic.SAction) {
 		this.delegate = new basic.Action();
 		this.delegate.add(arg);
-	}
+	}	
 }
 
 class EventInfo1<T> {
@@ -101,5 +101,6 @@ export class EventCenter {
 	// ALL
 	public Clear(): void {
 		this.eventMap.clear();
+		this.eventMap1.clear();
 	}
 }

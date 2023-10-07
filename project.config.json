@@ -27,7 +27,7 @@
             "disablePlugins": [],
             "outputPath": ""
         },
-        "useIsolateContext": true,
+        "useIsolateContext": false,
         "userConfirmedUseIsolateContext": true,
         "userConfirmedBundleSwitch": false,
         "packNpmManually": false,
@@ -43,7 +43,7 @@
     "miniprogramRoot": "minigame/",
     "compileType": "game",
     "libVersion": "2.21.1",
-    "appid": "wx07ce1e0e23e040ca",
+    "appid": "wxe580b9ab6ac58a93",
     "projectname": "AllOrNothing",
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
