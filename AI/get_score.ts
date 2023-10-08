@@ -53,7 +53,7 @@ export class get_score{
       return 0;
     }
     for(var i = 1;i<5;i++){
-      if(this.new_arr[i]-this.new_arr[i-1]!=1){
+      if(this.arr[i]-this.arr[i-1]!=1){
         //console.log("不满足大顺子");
         return 0;
       }

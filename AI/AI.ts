@@ -1,5 +1,5 @@
 import { get_score } from "./get_score"
-import {list} from "./p_list"
+import {p_list} from "./p_list"
 
 
 class AI{
@@ -13,13 +13,14 @@ class AI{
 
 
     constructor(){
-        let l = new list
+        let l = new p_list
         this.p_list = l.get_priority_list()
     }
 
     
     set_now_dice(arr:number[]){
         this.now_dice = arr.concat()
+        this.sum = 0
     }
 
 
@@ -30,29 +31,34 @@ class AI{
      * 选择最优解
      * @returns 
      */
-    get_best_choose(){
+    get_best_choose(result_dice:number[],serial_number:number[]){
         for(let i = 0;i < this.p_list.length ;i++){
             //若当前骰子不是目标结果子集则跳过
             if(!this.check_is_arr1_in_arr2(this.now_dice,this.p_list[i])){
                 continue
             }
             else{
-                if(this.check_is_arr1_in_arr2(this.p_list[i],this.now_dice.concat(this.result_dice).sort())){
+                if(this.check_is_arr1_in_arr2(this.p_list[i],this.now_dice.concat(result_dice).sort())){
                     console.log("最优选择为"+this.p_list[i])
-                    return this.p_list[i]
+                    let keep_arr = this.get_arr1_sub_arr2(this.p_list[i],this.now_dice);
+                    this.now_dice = this.p_list[i];
+                    return this.get_Serial_Number(keep_arr,result_dice,serial_number);
                 }
             }
 
         }
 
-
+        return this.now_dice
 
     }
 
 
 
     
-
+    /**
+     * 根据当前骰子点数获取得分期望
+     * @returns 
+     */
     get_ave = () =>{
         console.log(this.sum);
         this.ave = this.sum;
@@ -84,6 +90,11 @@ class AI{
       get_count = (arr:number[],p:number) =>{
         var new_arr = arr.concat();
         var new_arr_copy;
+        if(new_arr.length == 5){
+            new_arr_copy = new_arr.concat();
+            this.calculate_sum(new_arr_copy);
+            return
+        }
         //从第p位开始生成所有可能并获得各种可能的得分
         for(let i = 1;i <= 6;i ++){
           new_arr[p] = i;
@@ -97,18 +108,32 @@ class AI{
           }
         }
       }
-      /**
-       * 用于获取p并执行get_count函数
-       */
-      
-    
 
 
 
 
+      get_Serial_Number(keep_arr:number[],all_arr:number[],number_list:number[]){
+        let result:number[] = all_arr.concat();
 
-        
+        let keep_Serial_Number:number[] = [];
 
+        for(let i = 0; i < keep_arr.length ; i++){
+            for(let j = 0 ; j < result.length ; j++){
+                if( keep_arr[i] == result[j] ){
+                    keep_Serial_Number.push(number_list[j]);
+                    result[j] = 0;
+                    break;
+                }
+
+            }
+
+
+        }
+        return keep_Serial_Number;
+
+
+
+    }
 
 
 
@@ -190,7 +215,73 @@ class AI{
     }
 
 
+
+    get_arr1_sub_arr2(arr1:number[],arr2:number[]){
+        let count:number[] = [0,0,0,0,0,0]
+
+        for(let i = 0;i<arr1.length;i++){
+            if(arr1[i] == 1){
+                count[0] ++
+            }
+            if(arr1[i] == 2){
+                count[1] ++
+            }
+            if(arr1[i] == 3){
+                count[2] ++
+            }
+            if(arr1[i] == 4){
+                count[3] ++
+            }
+            if(arr1[i] == 5){
+                count[4] ++
+            }
+            if(arr1[i] == 6){
+                count[5] ++
+            }
+    }
+
+    for(let i = 0;i<arr2.length;i++){
+        if(arr2[i] == 1){
+            count[0] --
+        }
+        if(arr2[i] == 2){
+            count[1] --
+        }
+        if(arr2[i] == 3){
+            count[2] --
+        }
+        if(arr2[i] == 4){
+            count[3] --
+        }
+        if(arr2[i] == 5){
+            count[4] --
+        }
+        if(arr2[i] == 6){
+            count[5] --
+        }
 }
+
+
+    let new_arr:number[] = [];
+
+    for(let i = 0; i < 6 ; i ++){
+        for(let j = 0;j < count [i] ; j ++){
+            new_arr.push(i+1);
+        }
+
+    }
+    return new_arr;
+
+}
+
+
+    
+
+
+}
+
+
+
 
 
 export {AI}
