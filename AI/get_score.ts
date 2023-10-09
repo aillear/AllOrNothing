@@ -1,7 +1,8 @@
 /**
- * 用于计算得分
+ * 用于计算得分，（乱序，长度不超过5，只包括1到6的数组）
+ * 
  */
-export class get_score{
+export class Get_score{
   arr:number[] = []
   new_arr:number[] = []
   length:number = 0
@@ -9,7 +10,54 @@ export class get_score{
   constructor(){
 
   }
-  set_arr(arr:number[]){
+  /**
+   * 输入骰子组合，返回得分
+   * @param arr 
+   * @returns 
+   */
+  Get_sum = (arr) =>{
+
+    this.Set_arr(arr)
+
+    let sum = 0;
+    for(let i = 0;i < this.length;i++)
+    {sum+=this.arr[i];}
+    //console.log(this.arr)
+    if(this.Is_five_shunzi())
+    {sum+=this.Is_five_shunzi();
+    return sum;}
+
+    if(this.Is_four_shunzi())
+    {sum+=this.Is_four_shunzi();
+      return sum;}
+
+    if(this.Is_hulu())
+    {sum+=this.Is_hulu();
+      return sum;}
+
+    if(this.Is_fivefold())
+    {sum+=this.Is_fivefold();
+      return sum;}
+
+    if(this.Is_quadruple())
+    {sum+=this.Is_quadruple();
+      return sum;}
+    if(this.Is_double_double())
+    {sum+=this.Is_double_double();
+      return sum;}
+    if(this.Is_trible())
+    {sum+=this.Is_trible();
+      return sum;}
+    
+    return sum;
+    
+  }
+
+
+
+
+
+  private Set_arr(arr:number[]){
     this.arr = arr.sort();
     this.new_arr = [];
     this.length = this.arr.length
@@ -19,7 +67,7 @@ export class get_score{
   /**
    * 小顺子
    */
-  is_four_shunzi = () =>{
+  private Is_four_shunzi = () =>{
     if(this.length<4){
       //console.log("不满足小顺子");
       return 0;
@@ -47,7 +95,7 @@ export class get_score{
   /**
    * 大顺子
    */
-  is_five_shunzi = () =>{
+  private Is_five_shunzi = () =>{
     if(this.length < 5){
       //console.log("不满足大顺子");
       return 0;
@@ -65,7 +113,7 @@ export class get_score{
   /**
    * 连对
    */
-  is_double_double = () =>{
+  private Is_double_double = () =>{
     if(this.length < 4){
       //console.log("不满足连对");
       return 0;
@@ -93,7 +141,7 @@ export class get_score{
     return 0;
   }
 
-  is_trible = () =>{
+  private Is_trible = () =>{
     if(this.length < 3){
     //console.log("不满足三连");
     return 0;
@@ -114,7 +162,7 @@ export class get_score{
     return 0;
   }
 
-  is_quadruple = () =>{
+  private Is_quadruple = () =>{
     if(this.length < 4){
     //console.log("不满足四连");
     return 0;
@@ -135,7 +183,7 @@ export class get_score{
     return 0;
   }
 
-  is_fivefold = () =>{
+  private Is_fivefold = () =>{
     if(this.length < 5){
       //console.log("不满足五连");
       return 0;
@@ -156,8 +204,8 @@ export class get_score{
   return 0;
 }
 
-  is_hulu(){
-    if(this.is_double_double() && this.is_trible()){
+  private Is_hulu(){
+    if(this.Is_double_double() && this.Is_trible()){
       //console.log("满足葫芦");
       return 20;
     }
@@ -168,40 +216,7 @@ export class get_score{
   /**
    * 返回得分
    */
-  get_sum = () =>{
-    let sum = 0;
-    for(let i = 0;i < this.length;i++)
-    {sum+=this.arr[i];}
-    //console.log(this.arr)
-    if(this.is_five_shunzi())
-    {sum+=this.is_five_shunzi();
-    return sum;}
-
-    if(this.is_four_shunzi())
-    {sum+=this.is_four_shunzi();
-      return sum;}
-
-    if(this.is_hulu())
-    {sum+=this.is_hulu();
-      return sum;}
-
-    if(this.is_fivefold())
-    {sum+=this.is_fivefold();
-      return sum;}
-
-    if(this.is_quadruple())
-    {sum+=this.is_quadruple();
-      return sum;}
-    if(this.is_double_double())
-    {sum+=this.is_double_double();
-      return sum;}
-    if(this.is_trible())
-    {sum+=this.is_trible();
-      return sum;}
-    
-    return sum;
-    
-  }
+  
 
 
 
