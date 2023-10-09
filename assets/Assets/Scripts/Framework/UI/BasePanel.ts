@@ -9,7 +9,7 @@ export default abstract class BasePanel extends engine.Script {
 	})
 
 
-	private dic: Map<string, Array<engine.Component>>;
+	private dic: Map<string, Array<engine.Component>> = new Map<string, Array<engine.Component>>([]);
 
 
 	public onAwake() {
@@ -19,7 +19,6 @@ export default abstract class BasePanel extends engine.Script {
 	}
 
 	public onStart(): void {
-		this.dic = new Map<string, Array<engine.Component>>([]);
 		this.FindAllElements<engine.UIButton>(engine.UIButton);
 		this.FindAllElements<engine.UILabel>(engine.UILabel);
 		this.FindAllElements<engine.UIRichText>(engine.UIRichText);
@@ -28,9 +27,10 @@ export default abstract class BasePanel extends engine.Script {
 		this.FindAllElements<engine.UIToggleGroup>(engine.UIToggleGroup);
 		this.FindAllElements<engine.UISprite>(engine.UISprite);
 		this.FindAllElements<engine.TouchInputComponent>(engine.TouchInputComponent);
+		console.log("panel start");
 	}
 
-	private FindAllElements<T extends engine.Component>(ctor: typeof engine.Component): void{
+	protected FindAllElements<T extends engine.Component>(ctor: typeof engine.Component): void{
 		let temp: T[] = Utility.GetComponentsInChildren<T>(this.entity, ctor);
 
 		for (let control of temp) {

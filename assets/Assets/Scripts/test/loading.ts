@@ -1,5 +1,7 @@
 import engine from "engine";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
+import GetPanelMgr, { PanelLayer } from "../Framework/UI/PanelMgr";
+import StartPanel from "../Start/StartPanel";
 @engine.decorators.serialize("loading")
 export default class loading extends engine.Script {
     @engine.decorators.property({
@@ -11,9 +13,7 @@ export default class loading extends engine.Script {
         console.log("loading asdasdasd");
         GetEventCenter().AddEventListener(E_EventName.LoadOver, () => {
             console.log("load over");
-            engine.loader.load<engine.Scene>("Assets/Scenes/testPanel.scene").promise.then((scene) => {
-                engine.game.playScene(scene);;
-            });
+            GetPanelMgr().ShowPanel<StartPanel>("StartPanel", PanelLayer.top, StartPanel);
         });
 
 
