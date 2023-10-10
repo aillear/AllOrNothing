@@ -7,16 +7,18 @@ export default class Utils {
     const childList = entity.transform2D.children;
     for (let i = 0; i < childrenCount; i++) {
       let child = childList[i].entity;
-      if (child.name === name) {
+      if (child.name == name) {
+        //console.log(child);
         return child;
       }
     }
-    let result = null
+    let result = null;
     for (let i = 0; i < childrenCount; i++) {
       let child = childList[i].entity;
-      result = this.getChildByName(child, name)
+      result = this.getChildByName(child, name);
+      if (result != null) {return result;}
     }
-    return result
+    return result;
   }
 
   public static clamp(value: number, min: number, max: number): number {

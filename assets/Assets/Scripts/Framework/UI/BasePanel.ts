@@ -9,16 +9,12 @@ export default abstract class BasePanel extends engine.Script {
 	})
 
 
-	private dic: Map<string, Array<engine.Component>> = new Map<string, Array<engine.Component>>([]);
+	private dic: Map<string, Array<engine.Component>> = new Map<string, Array<engine.Component>>([]);;	
 
 
 	public onAwake() {
-		// 初始化并且获取面板上的组件, 不知道为啥不能用.换到下面onStart里
+		this.dic = new Map<string, Array<engine.Component>>([]);
 		console.log("awake")
-		
-	}
-
-	public onStart(): void {
 		this.FindAllElements<engine.UIButton>(engine.UIButton);
 		this.FindAllElements<engine.UILabel>(engine.UILabel);
 		this.FindAllElements<engine.UIRichText>(engine.UIRichText);
@@ -27,6 +23,10 @@ export default abstract class BasePanel extends engine.Script {
 		this.FindAllElements<engine.UIToggleGroup>(engine.UIToggleGroup);
 		this.FindAllElements<engine.UISprite>(engine.UISprite);
 		this.FindAllElements<engine.TouchInputComponent>(engine.TouchInputComponent);
+		// 初始化并且获取面板上的组件, 不知道为啥不能用.换到下面onStart里
+	}
+
+	public onStart(): void {
 		console.log("panel start");
 	}
 
@@ -45,6 +45,9 @@ export default abstract class BasePanel extends engine.Script {
 				(control as engine.UIButton).onClick.add(() => {
                     this.MyOnClick(name);
                 });
+				(control as engine.UIButton).onTouchOver.add(() => {
+					this.MyTouchOver(name);
+				});
 			}
 		}
 	}
@@ -57,6 +60,7 @@ export default abstract class BasePanel extends engine.Script {
 					return control as T;
 				}
 			}
+			console.log("fineded");
 		}	
 		return null;
 	}
@@ -69,4 +73,6 @@ export default abstract class BasePanel extends engine.Script {
 
 	// 按钮处理函数. 子类重写
 	public abstract MyOnClick(name: string): void;
+
+	public abstract MyTouchOver(name: string): void;
 }

@@ -4,6 +4,10 @@ import * as basic from "../Delegate/Delegate";
 export enum E_EventName{
 	TestEvent,
 	LoadOver,
+	ChangeState,	// 切换游戏事件
+	SelfJettonChange,	// 赌注切换
+	OtherJettonChange,
+	RateChange,	//  倍率切换
 }
 
 class EventInfo {
