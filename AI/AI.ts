@@ -53,7 +53,7 @@ class AI{
         let other_max = this.Get_max_score(other_arr);
         let other_min = this.Get_min_score(other_arr);
         let max_prise = my_now_score/(other_max-my_min);//最大倍率防止一轮暴毙
-        console.log(my_ave)
+        console.log("my_ave:"+my_ave)
         console.log(other_ave)
 
         console.log(my_min)
@@ -86,7 +86,7 @@ class AI{
         if(my_ave - other_ave >10 && my_ave - other_ave < 20){
             return 2<max_prise-now_prise ? 2:max_prise-now_prise;
         }
-        if(my_ave - other_ave >= 20){
+        if(my_ave - other_ave >= 15){
             return 3<max_prise-now_prise ? 3:max_prise-now_prise;
         }
 
@@ -227,7 +227,6 @@ class AI{
 
         }
         return keep_Serial_Number;
-
 
 
     }

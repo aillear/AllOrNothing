@@ -15,7 +15,7 @@ export class Get_score{
    * @param arr 
    * @returns 
    */
-  Get_sum = (arr) =>{
+  public Get_sum = (arr) =>{
 
     this.Set_arr(arr)
 
@@ -213,9 +213,7 @@ export class Get_score{
     return 0;
   }
 
-  /**
-   * 返回得分
-   */
+  
   
 
 
