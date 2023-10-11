@@ -154,9 +154,9 @@ export class AIController {
             return 0;
         }
 
-        if(rest_rounds <= 2 && this.currentJetton >= 1500  ){
+         if(rest_rounds <= 2 && this.currentJetton >= 1500  ){
 
-        }
+         }
 
         if(my_ave - other_ave <= 5){
             return 0;
@@ -167,10 +167,12 @@ export class AIController {
         if(my_ave - other_ave >10 && my_ave - other_ave < 20){
             return 2<max_prise-now_rate ? 2:max_prise-now_rate;
         }
-        if(my_ave - other_ave >= 15){
-            return 3<max_prise-this.currentJetton ? 3:max_prise-this.currentJetton;
+        if(my_ave - other_ave >= 15 && my_ave - other_ave <20){
+            return 3<max_prise-now_rate ? 3:max_prise-now_rate;
         }
-
+        if(my_ave - other_ave >= 20){
+            return 3;
+        }
         return 0;
 
       }
