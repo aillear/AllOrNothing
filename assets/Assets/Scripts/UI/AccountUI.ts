@@ -16,23 +16,17 @@ export default class AccountUI extends BasePanel {
     public onDestroy() {}
 
     public onShow(): void {
-        if (GetDataKeeper().GetData("NextOrOver") == "Next") {
-            Utils.getChildByName(this.entity, "GameOver").active = false;
-        }
-        else if (GetDataKeeper().GetData("NextOrOver") == "Over") {
-            Utils.getChildByName(this.entity, "NextInning").active = false;
-            let info = GetDataKeeper().GetData("GameResult")?"你获胜了!":"你失败了";
-            this.GetControl<engine.UILabel>("OverInfo", engine.UILabel).text = info
-        }
+        let info = GetDataKeeper().GetData("GameResult")?"你获胜了!":"你失败了";
+        this.GetControl<engine.UILabel>("OverInfo", engine.UILabel).text = info
     }
     public onHide(): void {}
     public MyOnClick(name: string): void {
         GetAudioMgr().PlaySound(new SoundInfo("Click", E_SoundType.Effects, "wav", 0));
-        if (name == "ConfirmNext") {
-            GetEventCenter().EventTrigger1<boolean>(E_EventName.SelfAccountConfirmOver, false);
+        if (name == "Again") {
+            GetEventCenter().EventTrigger1<string>(E_EventName.SelfAccountConfirmOver, "agree");
         }
-        else if (name == "ConfirmOver"){
-            GetEventCenter().EventTrigger1<boolean>(E_EventName.SelfAccountConfirmOver, true);
+        else if (name == "MainMenu") {
+            GetEventCenter().EventTrigger1<string>(E_EventName.SelfAccountConfirmOver, "disagree");
         }
         GetPanelMgr().HidePanel("Gaming/AccountUI");
     }

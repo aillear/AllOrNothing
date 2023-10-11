@@ -102,6 +102,22 @@ export class AIController {
         }
     }
 
+    public AgreeNewGame(callback: SAction1<string> = null): void {
+        let agree:string = "agree";
+
+        if (callback != null) {
+            callback(agree);
+        }
+    }
+
+    public StartNewGame(callback: SAction = null): void {
+        this.Reset();
+
+        if (callback != null) {
+            callback();
+        }
+    }
+
 
 
 

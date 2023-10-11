@@ -1,6 +1,6 @@
 import engine from "engine";
 import GetEventCenter, {
-    E_EventName,
+    E_EventName, EventCenter,
 } from "../Framework/EventCenter/EventCenter";
 import GetPanelMgr, { PanelLayer } from "../Framework/UI/PanelMgr";
 import BasicGamingUI from "../UI/BasicGamingUI";
@@ -17,7 +17,8 @@ import AccountUI from "../UI/AccountUI";
 
 export enum State {
     None, // 无状态
-    FirstState, // 表示刚刚进入游戏场景
+    NewGame, //  准备开始游戏阶段
+    FirstState, // 表示第一个场景
     ChooseOver, // 选择完骰子
     Rate, // 选择倍率
     Score, // 显示分数
@@ -45,6 +46,9 @@ export default class Gaming extends engine.Script {
     private sDone: boolean = false;     // 玩家是否完成回合
     private oDone: boolean = false;     // 控制器是否完成回合
 
+    private SAgree: string = "unknow";    // 玩家是否同意继续游戏, unknow 为未选定, agree 为同意, disagree为不同意
+    private OAgree: string = "unknow";    // 控制器是否同意继续游戏
+
     private Sdice: Dice[] = [];         // 玩家骰子
     private Odice: Dice[] = [];         // 控制器骰子
 
@@ -64,7 +68,7 @@ export default class Gaming extends engine.Script {
         GetEventCenter().AddEventListener(E_EventName.SelfSelectDiceOver, ()=>{ this.SelfSelectDiceOver(); });        // 监听玩家选择骰子完毕事件
         GetEventCenter().AddEventListener1<number>(E_EventName.SelfSelectRateOver, (rate)=>{ this.SelfSelectRateOver(rate); });  // 监听玩家选择倍率完毕事件
         GetEventCenter().AddEventListener(E_EventName.SelfConfirmJettonOver, ()=>{ this.SelfConfirmJettonOver(); });  // 监听玩家检查筹码变动完成
-        GetEventCenter().AddEventListener1<boolean>(E_EventName.SelfAccountConfirmOver, (isOver)=>{ this.SelfAccountConfirmOver(isOver); }); //监听玩家AccountUI确认
+        GetEventCenter().AddEventListener1<string>(E_EventName.SelfAccountConfirmOver, (isAgree)=>{ this.SelfAccountConfirmOver(isAgree); }); //监听玩家AccountUI确认
 
         GetPanelMgr().ShowPanel<BasicGamingUI>("Gaming/BasicGamingUI", PanelLayer.bot, BasicGamingUI);                  // 显示基础面板
 
@@ -105,7 +109,22 @@ export default class Gaming extends engine.Script {
         if (this.state == state1) return;
         this.state = state1;
 
-        if (state1 == State.FirstState) {
+
+        if (state1 == State.NewGame) {
+            // 初始化
+            this.Reset();
+            this.SAgree = "unknown";
+            this.OAgree = "unknown";
+            this.selfJetton = 1000;
+            this.otherJetton = 1000;
+            this.currentInning = 1;
+            // 通知控制器进行新的游戏
+            GetAIController().StartNewGame();
+            // 切换游戏阶段
+            GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.FirstState);
+        }
+
+        else if (state1 == State.FirstState) {
             // 改变当前回合
             this.currentRound++;
             GetEventCenter().EventTrigger1<number>(E_EventName.RoundChange, this.currentRound);   // 改变显示的回合
@@ -146,6 +165,7 @@ export default class Gaming extends engine.Script {
             // 展示新面板
             GetPanelMgr().ShowPanel<CheckDiceUI>("Gaming/CheckDiceUI", PanelLayer.bot, CheckDiceUI);
         } 
+
         else if (state1 == State.Rate) {
             // 获取self的确定的骰子, 供controller决策
             let selfPoints: number[] = [];
@@ -167,6 +187,7 @@ export default class Gaming extends engine.Script {
             // 展示新面板, 供玩家决策
             GetPanelMgr().ShowPanel<ChooseRateUI>("Gaming/ChooseRateUI", PanelLayer.top, ChooseRateUI);
         } 
+
         else if (state1 == State.Score) {
             // 把骰子归位
             for (let i = 0; i < 5; i++){
@@ -224,35 +245,40 @@ export default class Gaming extends engine.Script {
                 let winner:boolean = (this.selfJetton > this.otherJetton);
                 if (this.selfJetton == this.otherJetton) {winner = null;}   // 平局?
 
-                GetAIController().ShowResult((winner==null)?null:!winner, ()=>{
-                    this.oDone = true;
-                    this.CheckDone(State.Over);
-                });
+                // 通知控制器本次游戏是否胜利
+                GetAIController().ShowResult((winner==null)?null:!winner);
 
                 // TODO: 玩家显示是否获胜. 传递信息给Account UI面板
                 GetDataKeeper().SetData("NextOrOver", "Over");
                 GetDataKeeper().SetData("GameResult", winner);
+
+                GetAIController().AgreeNewGame((agree)=>{
+                    this.OAgree = agree;
+                    this.CheckAgreeNewGame();
+                })
+
+                // 展示面板
+                GetPanelMgr().ShowPanel<AccountUI>("Gaming/AccountUI",PanelLayer.top, AccountUI);
             }
             // 游戏继续
             else {
                 this.currentInning++;
                 GetEventCenter().EventTrigger1<number>(E_EventName.InningChange, this.currentInning);
                 this.Reset(); // 重置游戏
-                GetAIController().NextInning(()=>{
+                GetAIController().NextInning(() => {
                     this.oDone = true;
                     this.CheckDone(State.FirstState);
-                });
-                
-                // TODO: 玩家显示确定进入下一局. 传递信息给Account UI面板
-                GetDataKeeper().SetData("NextOrOver", "Next");
+                })
+                this.sDone = true;
+                this.CheckDone(State.FirstState);
             }
-            // 展示面板
-            GetPanelMgr().ShowPanel<AccountUI>("Gaming/AccountUI",PanelLayer.top, AccountUI);
+            
         }
 
         else if (state1 == State.Over) {
-
+            // 直接返回主界面
         }
+
         else if (state1 == State.Stop) {
         } 
         else return;
@@ -265,6 +291,19 @@ export default class Gaming extends engine.Script {
         this.sDone = false;
         this.oDone = false;
         GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, targetState);
+    }
+
+    public CheckAgreeNewGame(): void {
+        if (this.SAgree == "disagree" || this.OAgree == "disagree") {
+            GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.Over);
+            return;
+        }
+        if (this.SAgree == "unknown" || this.OAgree == "unknown") return;
+        
+        // 都同意进入下一把
+        if (this.SAgree == "agree" && this.OAgree == "agree") {
+            GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.NewGame);
+        }
     }
 
     // 玩家选择骰子完成
@@ -297,12 +336,9 @@ export default class Gaming extends engine.Script {
     }
 
     // 玩家确认AccoutUI界面
-    public SelfAccountConfirmOver(isOver: boolean): void {
-        console.log("accountConfirmOver");
-        this.sDone = true;
-        let newState = State.FirstState;
-        if (isOver) newState = State.Over;
-        this.CheckDone(newState);
-        
+    public SelfAccountConfirmOver(isAgree: string): void {
+        this.SAgree = isAgree;
+        // TODO: 展示等待界面==>ShowPanel(
+        this.CheckAgreeNewGame();
     }
 }
