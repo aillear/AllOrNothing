@@ -57,9 +57,8 @@ export class AIController {
     public SelectRate(points: number[], currentRate:number, restRound:number, callback:SAction1<any> = null) : void {
         // 用这个选择倍率,确保结果为0~3
         let Rate: number = 0;
-        // 测试,注释下方内容
-        Rate = this.GetPrise(points, currentRate, restRound);
-        Rate = Math.ceil(Rate);
+        Rate = (this.GetPrise(points, currentRate, restRound));
+        Rate = Math.floor(Rate);
         /* 
         handle your logic here
         */
@@ -170,9 +169,9 @@ export class AIController {
             return 0;
         }
 
-        if(rest_rounds <= 2 && this.currentJetton >= 1500  ){
+         if(rest_rounds <= 2 && this.currentJetton >= 1500  ){
 
-        }
+         }
 
         if(my_ave - other_ave <= 5){
             return 0;
@@ -183,10 +182,12 @@ export class AIController {
         if(my_ave - other_ave >10 && my_ave - other_ave < 20){
             return 2<max_prise-now_rate ? 2:max_prise-now_rate;
         }
-        if(my_ave - other_ave >= 15){
+        if(my_ave - other_ave >= 15 && my_ave - other_ave <20){
             return 3<max_prise-now_rate ? 3:max_prise-now_rate;
         }
-
+        if(my_ave - other_ave >= 20){
+            return 3;
+        }
         return 0;
 
       }
