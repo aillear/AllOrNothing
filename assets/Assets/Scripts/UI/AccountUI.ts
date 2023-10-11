@@ -4,6 +4,7 @@ import GetDataKeeper from "../Framework/DataKeeper/DataKeeper";
 import Utils from "../../../ui/common/Utils";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
 import GetPanelMgr from "../Framework/UI/PanelMgr";
+import GetAudioMgr, { E_SoundType, SoundInfo } from "../Framework/AudioMgr/AudioMgr";
 @engine.decorators.serialize("AccountUI")
 export default class AccountUI extends BasePanel {
     @engine.decorators.property({
@@ -26,6 +27,7 @@ export default class AccountUI extends BasePanel {
     }
     public onHide(): void {}
     public MyOnClick(name: string): void {
+        GetAudioMgr().PlaySound(new SoundInfo("Click", E_SoundType.Effects, "wav", 0));
         if (name == "ConfirmNext") {
             GetEventCenter().EventTrigger1<boolean>(E_EventName.SelfAccountConfirmOver, false);
         }

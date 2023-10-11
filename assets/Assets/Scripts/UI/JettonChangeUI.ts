@@ -2,6 +2,7 @@ import engine from "engine";
 import BasePanel from "../Framework/UI/BasePanel";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
 import GetPanelMgr from "../Framework/UI/PanelMgr";
+import GetAudioMgr, { E_SoundType, SoundInfo } from "../Framework/AudioMgr/AudioMgr";
 @engine.decorators.serialize("JettonChangeUI")
 export default class JettonChangeUI extends BasePanel {
 
@@ -33,6 +34,7 @@ export default class JettonChangeUI extends BasePanel {
         GetEventCenter().ClearEvent1(E_EventName.JettonChangeUI);
     }
     public MyOnClick(name: string): void {
+        GetAudioMgr().PlaySound(new SoundInfo("Click", E_SoundType.Effects, "wav", 0));
         if (name == "Confirm") {
             GetEventCenter().EventTrigger(E_EventName.SelfConfirmJettonOver);
             GetPanelMgr().HidePanel("Gaming/JettonChangeUI");

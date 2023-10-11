@@ -3,6 +3,10 @@ import BasePanel from "../Framework/UI/BasePanel";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
 import Utility from "../Framework/Uitility";
 import Utils from "../../../ui/common/Utils";
+import GetAudioMgr, { E_SoundType, SoundInfo } from "../Framework/AudioMgr/AudioMgr";
+import GetPanelMgr, { PanelLayer } from "../Framework/UI/PanelMgr";
+import TipsUI from "./TipsUI";
+import SettingsUI from "./SettingsUI";
 @engine.decorators.serialize("BasicGamingUI")
 export default class BasicGamingUI extends BasePanel {
     @engine.decorators.property({
@@ -46,24 +50,16 @@ export default class BasicGamingUI extends BasePanel {
         
     }
     public MyOnClick(name: string): void {
+        GetAudioMgr().PlaySound(new SoundInfo("Click", E_SoundType.Effects, "wav", 0));
         if (name == "Setting") {
-            // GetEventCenter().EventTrigger1<number>(E_EventName.OtherJettonChange, 666);
-            // GetEventCenter().EventTrigger1<number>(E_EventName.SelfJettonChange, 1433);
-            // GetEventCenter().EventTrigger1<number>(E_EventName.RateChange, 13);
-            //this.returnText.topRelative = -0.3;
+            GetPanelMgr().ShowPanel<SettingsUI>("Gaming/SettingsUI", PanelLayer.sys, SettingsUI);
         }
         else if (name == "Tips"){
-            //this.tipsText.topRelative = -0.3;
+            GetPanelMgr().ShowPanel<TipsUI>("Gaming/TipsUI", PanelLayer.sys, TipsUI);
         }
 
     }
 
-    public MyTouchOver(name: string): void {
-        if (name == "Return"){
-            //this.returnText.topRelative = 0;
-        }
-        else if (name == "Tips"){
-            //this.tipsText.topRelative = 0;
-        }   
+    public MyTouchOver(name: string): void { 
     }
 }

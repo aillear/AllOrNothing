@@ -2,6 +2,7 @@ import engine from "engine";
 import BasePanel from "../Framework/UI/BasePanel";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
 import GetPanelMgr from "../Framework/UI/PanelMgr";
+import GetAudioMgr, { E_SoundType, SoundInfo } from "../Framework/AudioMgr/AudioMgr";
 @engine.decorators.serialize("ChooseRateUI")
 export default class ChooseRateUI extends BasePanel {
     @engine.decorators.property({
@@ -14,6 +15,7 @@ export default class ChooseRateUI extends BasePanel {
     public onShow(): void {}
     public onHide(): void {}
     public MyOnClick(name: string): void {
+        GetAudioMgr().PlaySound(new SoundInfo("Click", E_SoundType.Effects, "wav", 0));
         let rate:number = 0;
         if (name == "Rate0"){
             rate = 0;

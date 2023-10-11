@@ -20,7 +20,7 @@ export class SoundInfo{
     public path:string;
     public type:E_SoundType;
 
-    public constructor(name:string, type:E_SoundType, fileExt: string = "mp3" ,index: number = -1){
+    public constructor(name:string, type:E_SoundType, fileExt: string = "wav" ,index: number = -1){
         this.type = type;
         
         // 获取路径
@@ -61,10 +61,9 @@ export class AudioMgr {
         this.AudioObj = engine.game.createEntity2D("AudioObj");
         engine.game.markAsPersist(this.AudioObj);   // 不销毁, 内存不要钱
         // TODO: 设置各个音量
-        for (let i = 0; i < E_SoundType.Effects; i++) {
-            this.soundVolume.set(i, 0.5);
+        for (let i = 0; i <= E_SoundType.Effects; i++) {
+            this.SetSoundVolume(i, 1);
         }
-
 
         // 检测是否有声音播放完毕
         GetPublicComponentMgr().AddUpdateListener((dt)=>{this.CheckDoneSource();});
@@ -88,7 +87,6 @@ export class AudioMgr {
         engine.loader.load<engine.AudioClip>("Assets/Audios/BGM/"+name).promise.then((clip) => {
             clip.preloadAudioData = true;
             this.BGM.clip = clip;
-            console.log(clip);
             this.BGM.volume = this._BGMVolume;
             this.BGM.play();    
         }); 
