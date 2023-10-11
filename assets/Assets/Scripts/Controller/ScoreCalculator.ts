@@ -82,15 +82,34 @@ export class ScoreCalculator {
             //console.log("不满足小顺子");
             return 0;
         }
-        for (var i = 1; i < 4; i++) {
-            if (this.newArr[i] - this.newArr[i - 1] != 1) {
-                //console.log("不满足小顺子");
-                return 0;
-            }
-        }
+        if(this.newArr.length == 4){
+                for (var i = 1; i < 4; i++) {
+                if (this.newArr[i] - this.newArr[i - 1] != 1) {
+                    //console.log("不满足小顺子");
+                    return 0;
+                }
+            }}
+
+        if(this.newArr.length == 5){
+            let p =0;
+            for (var i = 1; i < 4; i++) {
+                if (this.newArr[i] - this.newArr[i - 1] != 1) {
+                    //console.log("不满足小顺子");
+                    p++;
+                }
+                if(p>=2){
+                    return 0;
+                }
+        }}
         //console.log("满足小顺子");
         return 30;
     };
+
+
+
+
+
+
     /**
      * 大顺子
      */
