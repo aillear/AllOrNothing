@@ -56,7 +56,8 @@ export class AIController {
     public SelectRate(points: number[], currentRate:number, restRound:number, callback:SAction1<any> = null) : void {
         // 用这个选择倍率,确保结果为0~3
         let Rate: number = 0;
-        Rate = this.GetPrise(points, currentRate, restRound);
+        Rate = (this.GetPrise(points, currentRate, restRound));
+        Rate = Math.floor(Rate);
         /* 
         handle your logic here
         */
