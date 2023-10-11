@@ -1,10 +1,10 @@
 import { AI } from "./AI"
-import { Get_score } from "./get_score"
+import { GetScore } from "./get_score"
 import { P_list } from "./p_list"
 
 let l = new P_list
 let ai = new AI
-let gs = new Get_score
+let gs = new GetScore
 
 
 //console.log(l.get_priority_list)

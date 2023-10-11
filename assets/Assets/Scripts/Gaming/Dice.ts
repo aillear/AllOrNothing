@@ -15,7 +15,8 @@ export default class Dice extends engine.Script {
     private speed:number = 1;               // 位移速度
     private _point:number = 5;              // 当前点数-1              
     public sprite:engine.UISprite = null;   // 图片显示器
-    public isSelected: boolean = false;
+    public isSelected: boolean = false;     // 是否被选择
+    public isMoved: boolean = false;        // 是否已经到选定框里
     public selectedSprite:engine.UISprite = null;
     public get point():number { return this._point+1; }
 
@@ -25,7 +26,6 @@ export default class Dice extends engine.Script {
             this.sprite = this.entity.getComponent<engine.UISprite>(engine.UISprite);
         }
         let temp = Utility.RandomInt(0,6);
-        console.log(GetAtlasMgr().atlas.getSpriteframeByKey(GetAtlasMgr().diceInfo[temp]));
         this.sprite.spriteFrame = GetAtlasMgr().atlas.getSpriteframeByKey(GetAtlasMgr().diceInfo[temp]);
         this._point = temp;
     }
@@ -59,13 +59,25 @@ export default class Dice extends engine.Script {
         this.speed = newspeed;
         this.isArrived = false;
     }
+
+
+    public Reset(): void {
+        this.isArrived = true;
+        this.isSelected = false;
+        this.isMoved = false;
+    }
+
     public onClick(){
-        console.log("onClick");
+        if (this.isMoved) return;
         this.isSelected = !this.isSelected;
         if (this.selectedSprite == null){ 
             this.selectedSprite = Utils.getChildByName(this.entity, "Selected").getComponent<engine.UISprite>(engine.UISprite);
         }
         this.selectedSprite.visible = this.isSelected;
-        
+    }
+
+    public SetSelectedCircle(showCircle:boolean){
+        this.isSelected = showCircle;
+        this.selectedSprite.visible = this.isSelected;
     }
 }

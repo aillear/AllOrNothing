@@ -14,7 +14,6 @@ export default abstract class BasePanel extends engine.Script {
 
 	public onAwake() {
 		this.dic = new Map<string, Array<engine.Component>>([]);
-		console.log("awake")
 		this.FindAllElements<engine.UIButton>(engine.UIButton);
 		this.FindAllElements<engine.UILabel>(engine.UILabel);
 		this.FindAllElements<engine.UIRichText>(engine.UIRichText);
@@ -27,7 +26,6 @@ export default abstract class BasePanel extends engine.Script {
 	}
 
 	public onStart(): void {
-		console.log("panel start");
 	}
 
 	protected FindAllElements<T extends engine.Component>(ctor: typeof engine.Component): void{
@@ -60,7 +58,6 @@ export default abstract class BasePanel extends engine.Script {
 					return control as T;
 				}
 			}
-			console.log("fineded");
 		}	
 		return null;
 	}

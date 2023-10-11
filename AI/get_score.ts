@@ -2,7 +2,7 @@
  * 用于计算得分，（乱序，长度不超过5，只包括1到6的数组）
  * 
  */
-export class Get_score{
+export class GetScore{
   arr:number[] = []
   new_arr:number[] = []
   length:number = 0
@@ -15,7 +15,7 @@ export class Get_score{
    * @param arr 
    * @returns 
    */
-  public Get_sum = (arr) =>{
+  public GetSum = (arr: Array<any>) =>{
 
     this.Set_arr(arr)
 

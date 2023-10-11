@@ -4,10 +4,21 @@ import * as basic from "../Delegate/Delegate";
 export enum E_EventName{
 	TestEvent,
 	LoadOver,
-	ChangeState,	// 切换游戏事件
-	SelfJettonChange,	// 赌注切换
-	OtherJettonChange,
-	RateChange,	//  倍率切换
+	ChangeState,	// 切换游戏阶段事件
+
+	SelfJettonChange,	// 赌注切换显示
+	OtherJettonChange,	
+	RateChange,	//  倍率切换显示
+	RoundChange,	// 回合切换显示
+	InningChange,	// 局切换显示
+
+	SelfSelectDiceOver,   // self选择骰子完成
+	SelfSelectRateOver,   // self选择倍率完成
+	SelfConfirmJettonOver, // self确认筹码变动完成
+	SelfAccountConfirmOver, // self确认AccountUI完成
+
+
+	JettonChangeUI,  	  // JettonChangeUI 想要知道self的score变化
 }
 
 class EventInfo {

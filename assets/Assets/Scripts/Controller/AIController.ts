@@ -7,7 +7,7 @@ export default function GetAIController(){
     return AIController.GetInstance();
 }
 
-
+// 如果做联机,需要在函数套一层异步.
 export class AIController {
     private static instance: AIController;
     public priorityList:number[][];
@@ -24,8 +24,8 @@ export class AIController {
     }
 
     public Reset(): void {
-        this.selected = [];
         this.currentJetton = 1000;
+        this.selected = [];
     }
 
     public static GetInstance(): AIController {
@@ -39,6 +39,7 @@ export class AIController {
     public SelectDice(points: number[], indexs: number[], callback:SAction1<any> = null): void {
         // 用这个存储选择的骰子的索引
         let selectedIndexs: number[] = [];
+        // 测试,注释下方内容
         selectedIndexs = this.GetBestChoose(points,indexs).sort();
         /* 
         handle your logic here
@@ -56,7 +57,9 @@ export class AIController {
     public SelectRate(points: number[], currentRate:number, restRound:number, callback:SAction1<any> = null) : void {
         // 用这个选择倍率,确保结果为0~3
         let Rate: number = 0;
+        // 测试,注释下方内容
         Rate = this.GetPrise(points, currentRate, restRound);
+        Rate = Math.ceil(Rate);
         /* 
         handle your logic here
         */
@@ -84,8 +87,21 @@ export class AIController {
         }
     }
 
+    public ShowCurrentResult(isWinner: boolean, callback: SAction = null): void {
+        this.selected = [];
 
+        if (callback != null){
+            callback();
+        }
+    }
 
+    public NextInning(callback: SAction = null): void {
+        this.selected = [];
+
+        if (callback != null){
+            callback();
+        }
+    }
 
 
 
@@ -168,7 +184,7 @@ export class AIController {
             return 2<max_prise-now_rate ? 2:max_prise-now_rate;
         }
         if(my_ave - other_ave >= 15){
-            return 3<max_prise-this.currentJetton ? 3:max_prise-this.currentJetton;
+            return 3<max_prise-now_rate ? 3:max_prise-now_rate;
         }
 
         return 0;

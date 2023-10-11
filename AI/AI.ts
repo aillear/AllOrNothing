@@ -1,4 +1,4 @@
-import { Get_score } from "./get_score"
+import { GetScore } from "./get_score"
 import {P_list} from "./p_list"
 
 //AI类
@@ -9,7 +9,7 @@ class AI{
     public result_dice:number[] = []
     private sum:number = 0
     public ave:number = 0
-    private gs:Get_score = new Get_score
+    private gs:GetScore = new GetScore
 
 
 
@@ -120,7 +120,7 @@ class AI{
         for(let i = 0;i < this.p_list.length ;i++){
             //若当前骰子不是目标结果子集则跳过
             if(this.Check_is_arr1_in_arr2(arr,this.p_list[i])){
-                return this.gs.Get_sum(this.p_list[i]);
+                return this.gs.GetSum(this.p_list[i]);
             }
 
         }
@@ -138,7 +138,7 @@ class AI{
         for(let i = this.p_list.length - 1 ; i >= 0 ;i--){
             //若当前骰子不是目标结果子集则跳过
             if(this.Check_is_arr1_in_arr2(arr,this.p_list[i])){
-                return this.gs.Get_sum(this.p_list[i]);
+                return this.gs.GetSum(this.p_list[i]);
             }
 
         }
@@ -170,7 +170,7 @@ class AI{
      * @param {*} arr_1 传入的数组
      */
      private Calculate_sum = (arr_1:number[]) =>{
-        let score = this.gs.Get_sum(arr_1);
+        let score = this.gs.GetSum(arr_1);
         this.sum += score;
         //console.log(score);
       }
