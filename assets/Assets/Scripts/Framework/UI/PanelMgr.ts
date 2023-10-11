@@ -29,8 +29,9 @@ export class PanelMgr {
 	private constructor() {
 		const prefab = engine.loader.getAsset<engine.Prefab>("Assets/Prefabs/UI/Canvas.prefab");
 		const prefabInstance = prefab.instantiate()
-		const rootScene = engine.game.activeScene2D.root;
-		rootScene.transform2D.addChild(prefabInstance.transform2D);
+		engine.game.markAsPersist(prefabInstance);
+		// const rootScene = engine.game.activeScene2D.root;
+		// rootScene.transform2D.addChild(prefabInstance.transform2D);
 		this.canvas = prefabInstance;
 		this.top = Utils.getChildByName(prefabInstance, "top").transform2D;
 		this.mid = Utils.getChildByName(prefabInstance, "mid").transform2D;
@@ -121,5 +122,12 @@ export class PanelMgr {
 			case PanelLayer.sys: return this.sys;
 			default: return null;
 		}
+	}
+
+	public HideAllPanel(): void {
+		let nameList = Array.from(this.panelMap.keys());
+        for (let i = 0; i < nameList.length; i++){
+            this.HidePanel(nameList[i]);
+        }
 	}
 }

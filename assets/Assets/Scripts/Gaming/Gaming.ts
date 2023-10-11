@@ -33,7 +33,7 @@ export default class Gaming extends engine.Script {
     public get State(): State {
         return this.state;
     }
-    public maxInning: number = 3
+    public maxInning: number = 3;
     
     private currentRound: number = 0;   // 当前回合
     private currentInning: number = 1;  // 当前局
@@ -63,6 +63,8 @@ export default class Gaming extends engine.Script {
     private OCheckPosIndex: number = 0;     // 当前控制器保存栏空位
 
     public onAwake() {
+        // 隐藏所有UI
+        GetPanelMgr().HideAllPanel();
         this.state = State.None;
         GetEventCenter().AddEventListener1<State>(E_EventName.ChangeState, (state)=>{ this.ChangeState(state); });       // 监听改变游戏状态事件
         GetEventCenter().AddEventListener(E_EventName.SelfSelectDiceOver, ()=>{ this.SelfSelectDiceOver(); });        // 监听玩家选择骰子完毕事件
@@ -84,7 +86,7 @@ export default class Gaming extends engine.Script {
             this.OunCheckPos[i] = Utils.getChildByName(this.entity, "UOtherPos"+i.toString()).transform2D.position;
         }
 
-        GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.FirstState); // 修改自己的状态到 FirstState
+        GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.NewGame); // 修改自己的状态到 FirstState
     }
 
     public Reset(): void {
@@ -118,6 +120,8 @@ export default class Gaming extends engine.Script {
             this.selfJetton = 1000;
             this.otherJetton = 1000;
             this.currentInning = 1;
+            this.maxInning = GetDataKeeper().GetData("MaxInnings");
+            console.log(this.maxInning);
             // 通知控制器进行新的游戏
             GetAIController().StartNewGame();
             // 切换游戏阶段
@@ -277,6 +281,9 @@ export default class Gaming extends engine.Script {
 
         else if (state1 == State.Over) {
             // 直接返回主界面
+            engine.loader.load<engine.Scene>("Assets/Scenes/Start.scene").promise.then((scene) => {
+                engine.game.playScene(scene);
+            });
         }
 
         else if (state1 == State.Stop) {
