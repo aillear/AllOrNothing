@@ -16,7 +16,11 @@ export default class AccountUI extends BasePanel {
     public onDestroy() {}
 
     public onShow(): void {
-        let info = GetDataKeeper().GetData("GameResult")?"你获胜了!":"你失败了";
+        let winner = GetDataKeeper().GetData("GameResult");
+        let info: string;
+        if (winner == null) info = "平局!";
+        else if (winner) info = "你获胜了!";
+        else info = "你失败了!";
         this.GetControl<engine.UILabel>("OverInfo", engine.UILabel).text = info
     }
     public onHide(): void {}

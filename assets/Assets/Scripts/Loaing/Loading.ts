@@ -1,5 +1,17 @@
 import engine from "engine";
 import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
+import GetPanelMgr, { PanelLayer } from "../Framework/UI/PanelMgr";
+import StartChooseUI from "../UI/StartChooseUI";
+import ChooseRoundUI from "../UI/ChooseRoundUI";
+import RuleUI from "../UI/RuleUI";
+import TipsUI from "../UI/TipsUI";
+import BasicGamingUI from "../UI/BasicGamingUI";
+import CheckDiceUI from "../UI/CheckDiceUI";
+import ChooseRateUI from "../UI/ChooseRateUI";
+import JettonChangeUI from "../UI/JettonChangeUI";
+import AccountUI from "../UI/AccountUI";
+import SettingsUI from "../UI/SettingsUI";
+import LoadingUI from "../UI/LoadingUI";
 @engine.decorators.serialize("Loading")
 export default class Loading extends engine.Script {
     @engine.decorators.property({
@@ -26,7 +38,22 @@ export default class Loading extends engine.Script {
                 engine.loader.load<engine.Atlas>("Assets/Arts/big.atlaspac", {
                     cacheable: true
                 }).promise.then((atlas) => {
-                    GetEventCenter().EventTrigger(E_EventName.LoadOver);
+                    GetPanelMgr().ShowPanel<LoadingUI>("Gaming/LoadingUI", PanelLayer.sys, LoadingUI);
+                    GetPanelMgr().ShowPanel<StartChooseUI>("Start/StartChooseUI", PanelLayer.bot, StartChooseUI);
+                    GetPanelMgr().ShowPanel<ChooseRoundUI>("Start/ChooseRoundUI", PanelLayer.bot, ChooseRoundUI);
+                    GetPanelMgr().ShowPanel<RuleUI>("Start/RuleUI", PanelLayer.bot, RuleUI);
+                    GetPanelMgr().ShowPanel<TipsUI>("Gaming/TipsUI", PanelLayer.bot, TipsUI);
+                    GetPanelMgr().ShowPanel<BasicGamingUI>("Gaming/BasicGamingUI", PanelLayer.bot, BasicGamingUI);  
+                    GetPanelMgr().ShowPanel<CheckDiceUI>("Gaming/CheckDiceUI", PanelLayer.bot, CheckDiceUI);
+                    GetPanelMgr().ShowPanel<ChooseRateUI>("Gaming/ChooseRateUI", PanelLayer.bot, ChooseRateUI);
+                    GetPanelMgr().ShowPanel<JettonChangeUI>("Gaming/JettonChangeUI", PanelLayer.bot, JettonChangeUI);
+                    GetPanelMgr().ShowPanel<AccountUI>("Gaming/AccountUI",PanelLayer.bot, AccountUI);
+                    GetPanelMgr().ShowPanel<SettingsUI>("Gaming/SettingsUI", PanelLayer.bot, SettingsUI);
+
+                    setTimeout(()=>{
+                        GetPanelMgr().HideAllPanel();
+                        GetEventCenter().EventTrigger(E_EventName.LoadOver);
+                    }, 100);
                 });
             });
         });

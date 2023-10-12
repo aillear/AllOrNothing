@@ -4,6 +4,8 @@ import GetPanelMgr, { PanelLayer, PanelMgr } from "../Framework/UI/PanelMgr";
 import GetAudioMgr, { E_SoundType, SoundInfo } from "../Framework/AudioMgr/AudioMgr";
 import GetAtlasMgr, { AtlasMgr } from "../Framework/AtlasMgr/AtlasMgr";
 import GetDataKeeper from "../Framework/DataKeeper/DataKeeper";
+import GetEventCenter, { E_EventName } from "../Framework/EventCenter/EventCenter";
+import { State } from "../Gaming/Gaming";
 @engine.decorators.serialize("SettingsUI")
 export default class SettingsUI extends BasePanel {
     @engine.decorators.property({
@@ -18,11 +20,9 @@ export default class SettingsUI extends BasePanel {
         this.selectedButtonsprite = this.GetControl<engine.UISprite>("SetAudioButton", engine.UISprite);
         if (GetAudioMgr().GetSoundVolume(E_SoundType.Effects) == 0) {
             this.selectedButtonsprite.spriteFrame = GetAtlasMgr().atlas.getSpriteframeByKey("Assets/Arts/Basic/selectedButton.png");
-            console.log(GetAtlasMgr().atlas.getSpriteframeByKey("Assets/Arts/Basic/selectedButton.png"));
         }
         else {
             this.selectedButtonsprite.spriteFrame = GetAtlasMgr().atlas.getSpriteframeByKey("Assets/Arts/Basic/selectedButton_p.png");
-            console.log(GetAtlasMgr().atlas.getSpriteframeByKey("Assets/Arts/Basic/selectedButton_p.png"));
         }
     }
     public onHide(): void {}
@@ -33,6 +33,7 @@ export default class SettingsUI extends BasePanel {
         }
         else if (name == "MainMenu") {
             GetPanelMgr().HidePanel("Gaming/SettingsUI");
+            GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.Over);
         }
         else if (name == "SetAudioButton") {
             let audioVolumn = GetAudioMgr().GetSoundVolume(E_SoundType.Effects);

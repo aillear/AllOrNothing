@@ -10,17 +10,14 @@ export default class ComponentController extends engine.Script {
     private fixedUpdateListener: Action;
 
     public Initialize(): void {
-        console.log("Initial");
         this.updateListener = new Action1<any>();
         this.fixedUpdateListener = new Action();
     }
 
-    public onAwake(): void {
-        console.log("awake");   
+    public onAwake(): void { 
     }
 
     public onStart(): void {
-        console.log("start");
         
     }
 

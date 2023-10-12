@@ -38,7 +38,6 @@ export default class Gaming extends engine.Script {
     private currentRound: number = 0;   // 当前回合
     private currentInning: number = 1;  // 当前局
     private currentRate = 0;            // 当前倍率
-    
 
     private selfJetton: number = 1000;
     private otherJetton: number = 1000;
@@ -104,7 +103,28 @@ export default class Gaming extends engine.Script {
     }
 
     public onUpdate(dt) {}
-    public onDestroy() {}
+    public onDestroy() {
+        console.log("gaming destroy");
+        let events :E_EventName[] = [
+            
+            E_EventName.SelfSelectDiceOver,
+            E_EventName.SelfConfirmJettonOver, 
+            E_EventName.JettonChangeUI,
+        ];
+
+        let events1 : E_EventName[] = [
+            E_EventName.ChangeState, 
+            E_EventName.SelfSelectRateOver, 
+            E_EventName.SelfAccountConfirmOver,
+        ];
+
+        for (let event of events) {
+            GetEventCenter().ClearEvent(event);
+        }
+        for (let event of events1) {
+            GetEventCenter().ClearEvent1(event);
+        }
+    }
 
     // 变更游戏状态,在此处理相关逻辑
     private ChangeState(state1: State) {
@@ -114,14 +134,14 @@ export default class Gaming extends engine.Script {
 
         if (state1 == State.NewGame) {
             // 初始化
-            this.Reset();
             this.SAgree = "unknown";
             this.OAgree = "unknown";
             this.selfJetton = 1000;
             this.otherJetton = 1000;
             this.currentInning = 1;
+            this.Reset();
+            GetEventCenter().EventTrigger1<number>(E_EventName.InningChange, this.currentInning);
             this.maxInning = GetDataKeeper().GetData("MaxInnings");
-            console.log(this.maxInning);
             // 通知控制器进行新的游戏
             GetAIController().StartNewGame();
             // 切换游戏阶段
@@ -245,7 +265,7 @@ export default class Gaming extends engine.Script {
 
         else if (state1 == State.Account) {
             // 如果有人没筹码了 或者游戏轮完了,结束了
-            if (this.selfJetton == 0 || this.otherJetton == 0 || this.currentInning == this.maxInning) {
+            if (this.selfJetton <= 0 || this.otherJetton <= 0 || this.currentInning == this.maxInning) {
                 let winner:boolean = (this.selfJetton > this.otherJetton);
                 if (this.selfJetton == this.otherJetton) {winner = null;}   // 平局?
 

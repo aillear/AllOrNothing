@@ -67,23 +67,17 @@ export class PanelMgr {
 	public ShowPanel<T extends BasePanel>(name: string, layer: PanelLayer, ctor: typeof engine.Component) {
 		// 存在面板不再生成
 		if (this.panelMap.has(name)) {
+			// set parent
+			this.GetLayer(layer).addChild(this.panelMap.get(name).entity.transform2D);
 			this.panelMap.get(name).onShow();
+			this.panelMap.get(name).entity.active = true;
 			return;
 		}
 
 		engine.loader.load<engine.Prefab>("Assets/Prefabs/UI/" + name + ".prefab").promise.then((prefab) => {
-			let father: engine.Transform2D = this.top;
-			switch (layer) {
-				case PanelLayer.mid:
-					father = this.mid; break;
-				case PanelLayer.bot:
-					father = this.bot; break;
-				case PanelLayer.sys:
-					father = this.sys; break;
-			}
-
+			
 			const prefabInstance = prefab.instantiate();
-			father.addChild(prefabInstance.transform2D);
+			this.GetLayer(layer).addChild(prefabInstance.transform2D);
 
 			// 设置位置,不知道怎么写现在
 
@@ -96,13 +90,13 @@ export class PanelMgr {
 
 	// 隐藏名称为name的面板
 	public HidePanel(name: string) {
-		if (this.panelMap.has(name)) {
+		if (this.panelMap.has(name) && this.panelMap.get(name).entity.active) {
 			this.panelMap.get(name).onHide();
 			// 销毁节点
-			this.panelMap.get(name).entity.destroy();
+			this.panelMap.get(name).entity.active = false;
 
 			// 移除字典
-			this.panelMap.delete(name);
+			// this.panelMap.delete(name);
 
 		}
 	}
