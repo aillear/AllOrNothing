@@ -81,6 +81,8 @@ export default class Dice extends engine.Script {
 
     public SetSelectedCircle(showCircle:boolean){
         this.isSelected = showCircle;
+        if (this.selectedSprite != null){
         this.selectedSprite.visible = this.isSelected;
+        }
     }
 }

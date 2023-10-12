@@ -13,6 +13,8 @@ import { ScoreCalculator } from "../Controller/ScoreCalculator";
 import JettonChangeUI from "../UI/JettonChangeUI";
 import GetDataKeeper from "../Framework/DataKeeper/DataKeeper";
 import AccountUI from "../UI/AccountUI";
+import LoadingUI from "../UI/LoadingUI";
+import OtherRateUI from "../UI/OtherRateUI";
 
 
 export enum State {
@@ -54,7 +56,6 @@ export default class Gaming extends engine.Script {
     private ScheckPos: engine.Vector2[] = [];       // 玩家选定位置列表
     private OcheckPos: engine.Vector2[] = [];       // 控制器选定位置列表
 
-
     private SunCheckPos: engine.Vector2[] = [];     // 玩家未选定位置列表
     private OunCheckPos: engine.Vector2[] = [];     // 控制器未选定位置列表
 
@@ -88,6 +89,10 @@ export default class Gaming extends engine.Script {
         GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.NewGame); // 修改自己的状态到 FirstState
     }
 
+    public onStart(): void {
+        GetPanelMgr().HidePanel("LoadingUI");
+    }
+
     public Reset(): void {
         this.currentRound = 0;
         this.currentRate = 1;
@@ -104,7 +109,6 @@ export default class Gaming extends engine.Script {
 
     public onUpdate(dt) {}
     public onDestroy() {
-        console.log("gaming destroy");
         let events :E_EventName[] = [
             
             E_EventName.SelfSelectDiceOver,
@@ -163,7 +167,7 @@ export default class Gaming extends engine.Script {
                 if (!this.Odice[i].isMoved) {
                     this.Odice[i].Cast();
                     this.Odice[i].SetDest(this.OunCheckPos[i], 5, 10);
-                }  
+                }
             }
 
             if (this.currentRound == 3) {
@@ -205,7 +209,9 @@ export default class Gaming extends engine.Script {
 
             // 控制器进行决策
             GetAIController().SelectRate(selfPoints, this.currentRate, 3-this.currentRound, (rate: number) =>{
+                GetDataKeeper().SetData("OtherRate", rate);
                 this.currentRate += rate;
+                GetPanelMgr().ShowPanel<OtherRateUI>("Gaming/OtherRateUI",PanelLayer.sys, OtherRateUI);
                 GetEventCenter().EventTrigger1<number>(E_EventName.RateChange, this.currentRate);   // 改变显示的倍率
                 this.oDone = true;
                 // 如果当前为第三回合则直接跳转计分阶段,如果不为第三回合则跳转选择阶段

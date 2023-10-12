@@ -52,8 +52,9 @@ export default class Loading extends engine.Script {
 
                     setTimeout(()=>{
                         GetPanelMgr().HideAllPanel();
+                        GetPanelMgr().ShowPanel<LoadingUI>("Gaming/LoadingUI", PanelLayer.sys, LoadingUI);
                         GetEventCenter().EventTrigger(E_EventName.LoadOver);
-                    }, 100);
+                    }, 1000);
                 });
             });
         });
