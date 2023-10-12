@@ -25,6 +25,9 @@ export default class ChooseRoundUI extends BasePanel {
 		else if (name == "Inning5") {
 			this.DoSomething(5);
 		}
+		else if (name == "InningInfinite") {
+			this.DoSomething(114514);
+		}
 		else if (name == "Close") {
 			GetPanelMgr().HidePanel("Start/ChooseRoundUI");
 		}

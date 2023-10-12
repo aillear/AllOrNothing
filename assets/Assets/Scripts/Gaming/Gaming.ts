@@ -37,7 +37,7 @@ export default class Gaming extends engine.Script {
     
     private currentRound: number = 0;   // 当前回合
     private currentInning: number = 1;  // 当前局
-    private currentRate = 0;            // 当前倍率
+    private currentRate = 1;            // 当前倍率
 
     private selfJetton: number = 1000;
     private otherJetton: number = 1000;
@@ -90,7 +90,7 @@ export default class Gaming extends engine.Script {
 
     public Reset(): void {
         this.currentRound = 0;
-        this.currentRate = 0;
+        this.currentRate = 1;
         this.SCheckPosIndex = 0;
         this.OCheckPosIndex = 0;
         GetEventCenter().EventTrigger1<number>(E_EventName.SelfJettonChange, this.selfJetton);
@@ -158,12 +158,17 @@ export default class Gaming extends engine.Script {
                 if (!this.Sdice[i].isMoved) {
                     // 移动逻辑
                     this.Sdice[i].Cast();
-                    this.Sdice[i].SetDest(this.SunCheckPos[i], 5);
+                    this.Sdice[i].SetDest(this.SunCheckPos[i], 5, 10);
                 }
                 if (!this.Odice[i].isMoved) {
                     this.Odice[i].Cast();
-                    this.Odice[i].SetDest(this.OunCheckPos[i], 5);
+                    this.Odice[i].SetDest(this.OunCheckPos[i], 5, 10);
                 }  
+            }
+
+            if (this.currentRound == 3) {
+                setTimeout(() => {GetEventCenter().EventTrigger1<State>(E_EventName.ChangeState, State.Score);}, 750);
+                return;
             }
 
             // 生成供controller决策的新骰子列表

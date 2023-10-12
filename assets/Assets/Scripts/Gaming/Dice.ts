@@ -54,7 +54,9 @@ export default class Dice extends engine.Script {
     }
 
     // 设置目标位置
-    public SetDest(newDest:engine.Vector2, newspeed:number = 1){
+    public SetDest(newDest:engine.Vector2, newspeed:number = 1, randomOffset:number = 0){
+        newDest.x += 2 * randomOffset * Math.random() - randomOffset;
+        newDest.y += 2 * randomOffset * Math.random() - randomOffset;
         this.dest = newDest;
         this.speed = newspeed;
         this.isArrived = false;

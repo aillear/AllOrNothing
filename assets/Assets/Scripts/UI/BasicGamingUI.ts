@@ -47,7 +47,8 @@ export default class BasicGamingUI extends BasePanel {
             this.roundNumber.text = "当前轮数: " + number.toString() + "/3";
         });
         GetEventCenter().AddEventListener1<number>(E_EventName.InningChange, (number) => {
-            this.inningNumber.text = "当前局数: " + number.toString() + "/" + GetDataKeeper().GetData("MaxInnings").toString();
+            if (GetDataKeeper().GetData("MaxInnings") != 114514) this.inningNumber.text = "当前局数: " + number.toString() + "/" + GetDataKeeper().GetData("MaxInnings").toString();
+            else this.inningNumber.text = "当前局数: " + number.toString() + "/~";
         });
         //this.returnText = Utils.getChildByName(this.entity, "ReturnText").transform2D;
         //this.tipsText = Utils.getChildByName(this.entity, "TipsText").transform2D;
