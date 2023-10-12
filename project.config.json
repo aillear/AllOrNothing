@@ -48,7 +48,12 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": []
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "assets/IDEPack"
+      }
+    ]
   },
   "staticServerOptions": {
     "servePath": "minigame/assets/"

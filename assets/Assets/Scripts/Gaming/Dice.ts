@@ -67,6 +67,7 @@ export default class Dice extends engine.Script {
         this.isArrived = true;
         this.isSelected = false;
         this.isMoved = false;
+        this.SetSelectedCircle(false);
     }
 
     public onClick(){

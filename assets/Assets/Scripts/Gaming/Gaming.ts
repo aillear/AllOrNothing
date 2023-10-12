@@ -301,7 +301,6 @@ export default class Gaming extends engine.Script {
                 this.sDone = true;
                 this.CheckDone(State.FirstState);
             }
-            
         }
 
         else if (state1 == State.Over) {
