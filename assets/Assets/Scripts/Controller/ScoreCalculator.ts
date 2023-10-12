@@ -83,19 +83,18 @@ export class ScoreCalculator {
             return 0;
         }
         let count:number = 1
-        if(this.newArr.length == 4){
-                for (var i = 1; i < this.newArr.length; i++) {
-                if (this.newArr[i] - this.newArr[i - 1] == 1) {
-                    //console.log("不满足小顺子");
-                    count ++;
-                    if (count == 4) {
-                        return 30;
-                    }
+            for (var i = 1; i < this.newArr.length; i++) {
+            if (this.newArr[i] - this.newArr[i - 1] == 1) {
+                //console.log("不满足小顺子");
+                count ++;
+                if (count == 4) {
+                    return 30;
                 }
-                else{
-                    count = 1;
-                }
-            }}
+            }
+            else{
+                count = 1;
+            }
+        }
         
         
         //console.log("满足小顺子");
